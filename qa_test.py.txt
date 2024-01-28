@@ -1,0 +1,114 @@
+import requests
+import pytest
+from behave import given, when, then, step
+
+# Define the expected user data as a list of dictionaries
+EXPECTED_USERS = [
+    {
+        "Name": "Admin",
+        "First Name": "Mr",
+        "E-mail": "admin@uniq.app",
+        "Confirmed": "YES",
+        "Roles": "Administrator",
+        "Other Permissions": "N/A",
+        "Social": "None",
+        "Last Updated": "8 minutes ago",
+    },
+    {
+        "Name": "User",
+        "First Name": "Teacher",
+        "E-mail": "teacher@uniq.app",
+        "Confirmed": "YES",
+        "Roles": "Teacher",
+        "Other Permissions": "N/A",
+        "Social": "None",
+        "Last Updated": "4 hours ago",
+    },
+    {
+        "Name": "User",
+        "First Name": "Student",
+        "E-mail": "student@uniq.app",
+        "Confirmed": "YES",
+        "Roles": "Student",
+        "Other Permissions": "N/A",
+        "Social": "None",
+        "Last Updated": "4 hours ago",
+    },
+    {
+        "Name": "User",
+        "First Name": "Normal",
+        "E-mail": "normal@uniq.app",
+        "Confirmed": "YES",
+        "Roles": "Student",
+        "Other Permissions": "N/A",
+        "Social": "None",
+        "Last Updated": "4 hours ago",
+    },
+]
+
+# API endpoint URL
+API_ENDPOINT = "https://api.myweb.com/api/v1/users"
+
+def get_api_data():
+    response = requests.get(API_ENDPOINT)
+    response_data = response.json()
+    return response_data.get("data", [])
+
+# Gherkin step definitions
+
+@given("I am logged as admin")
+def step_impl(context):
+    # Implement the login logic here
+    pass
+
+@when("I am in Users page")
+def step_impl(context):
+    # Implement the navigation logic to Users page
+    pass
+
+@then("4 users are listed")
+def step_impl(context):
+    api_users = get_api_data()
+    assert len(api_users) == 4
+
+@then("1 of them is Administrator")
+def step_impl(context):
+    api_users = get_api_data()
+    for user in api_users:
+        if user["Roles"] == "Administrator":
+            break
+    else:
+        pytest.fail("No user with Administrator role found in API response")
+
+@when("I request API GET api/v1/users")
+def step_impl(context):
+    # Implement the logic to send API request
+    pass
+
+@then("I get HTTP 200 status code")
+def step_impl(context):
+    # Implement the logic to check the status code of the API response
+    pass
+
+@then("I get JSON in response body")
+def step_impl(context):
+    # Implement the logic to check if the API response is JSON
+    pass
+
+@then("the HTTP response body contains a page with 4 users")
+def step_impl(context):
+    api_users = get_api_data()
+    assert len(api_users) == 4
+
+@then("1 of them is Administrator")
+def step_impl(context):
+    api_users = get_api_data()
+    for user in api_users:
+        if user["Roles"] == "Administrator":
+            break
+    else:
+        pytest.fail("No user with Administrator role found in API response")
+
+if __name__ == "__main__":
+    # Run the tests using behave
+    pytest.main(["-v"])
